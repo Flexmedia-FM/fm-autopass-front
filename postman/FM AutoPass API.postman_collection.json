@@ -1,0 +1,1367 @@
+{
+	"info": {
+		"_postman_id": "911dcd6a-3c23-4ba8-bf52-4371889cc497",
+		"name": "FM AutoPass API",
+		"description": "Collection of all endpoints for the FMTool API running on localhost.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10275211",
+		"_collection_link": "https://winter-firefly-8256.postman.co/workspace/Team-Workspace~4454ed29-e136-4c35-8271-810f0e6ed133/collection/10275211-911dcd6a-3c23-4ba8-bf52-4371889cc497?action=share&source=collection_link&creator=10275211"
+	},
+	"item": [
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/health",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health GetRandom",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/health/random",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"health",
+								"random"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{user}}\",\n  \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/auth/login",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"{{REFRESHTOKEN}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/auth/refresh",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/auth/profile",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get owner Hello",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/auth/testeOwner",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"auth",
+								"testeOwner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tenant Admin hello",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/auth/testeTenantAdmin",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"auth",
+								"testeTenantAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tenant hello",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/auth/testeTenant",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"auth",
+								"testeTenant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "0.1-tenants",
+			"item": [
+				{
+					"name": "Create Tenant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ownerId\":\"75aa57b6-4b3e-409b-b083-2277a2731dd9\",\n  \"name\": \"FernandoPass\",\n  \"fantasyName\": \"Acme.inc\",\n  \"cnpj\": \"123456789/0001\",\n  \"address\":\"Aqui\",\n  \"slug\":\"slugfernando\",\n  \"tenantRole\":\"OWNER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/tenants",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"tenants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/equipamentos?page=1",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"equipamentos"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"description": "asc | desc",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "",
+									"description": "numeroSerie | modeloEquipamentoId | usuarioId | createdAt | updatedAt ",
+									"disabled": true
+								},
+								{
+									"key": "numeroSerie",
+									"value": "",
+									"description": "search by content",
+									"disabled": true
+								},
+								{
+									"key": "produtoId",
+									"value": "",
+									"description": "search by content",
+									"disabled": true
+								},
+								{
+									"key": "modeloEquipamentoId",
+									"value": "",
+									"description": "search by content",
+									"disabled": true
+								},
+								{
+									"key": "createdFrom",
+									"value": "2025-05-22T00:42:08.220Z",
+									"disabled": true
+								},
+								{
+									"key": "createdTo",
+									"value": "2025-05-22T23:42:10.250Z",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove tenant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ownerId\":\"75aa57b6-4b3e-409b-b083-2277a2731dd9\",\n  \"name\": \"FernandoPass\",\n  \"fantasyName\": \"Acme.inc\",\n  \"cnpj\": \"123456789/0001\",\n  \"address\":\"Aqui\",\n  \"slug\":\"slugfernando\",\n  \"tenantRole\":\"OWNER\"\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/tenants/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"tenants",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmcxpg7hl0001p6a70tm4uliv"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "0.2-users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"newuser\",\n  \"email\": \"newuser@example.com\",\n  \"nomeCompleto\": \"Novo Usu\\u00e1rio\",\n  \"password\": \"senha123\",\n  \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/users",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/users/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/users?search=ederson",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": null,
+									"description": "asc | desc",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "ederson",
+									"description": "login | email contains"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"newuser\",\n  \"email\": \"newuser@example.com\",\n  \"nomeCompleto\": \"Novo Usu\\u00e1rio\",\n  \"password\": \"senha123\",\n  \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/users/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/users/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmcxq64td0001mna0t9m4tccu"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"adminautopass@autopass.com.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/users/reset-password",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangePassword",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"adminautopass@autopass.com.br\",\r\n    \"token\":\"2c19d7589a73dd837d822fe8b5c669ee7caa9b454ff049b38ca749f8d9f8d9f4\",\r\n    \"password\":\"autopass@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/users/change-password",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"users",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "0.3-billing",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/billinghistory",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"billinghistory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4-lines",
+			"item": [
+				{
+					"name": "Get All Lines",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/lines",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"lines"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"description": "asc | desc (default) ",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "enderecoMac",
+									"description": "enderecoMac (default) | dataUso | createdAt | updatedAt",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "00:FF",
+									"description": "busca em enderecoMac",
+									"disabled": true
+								},
+								{
+									"key": "usado",
+									"value": "",
+									"description": "boolean",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5-estacoes",
+			"item": [
+				{
+					"name": "Get All Estacoes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/installations?page=1",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"installations"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "",
+									"description": "nome contains",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "SDS",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Estacao by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/installations/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"installations",
+								":id"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "",
+									"description": "nome contains",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "SDS",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "77b6e0ab-33d3-449e-9e44-f0d219e2a87b"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7-atms",
+			"item": [
+				{
+					"name": "Get all atms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/atms",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"atms"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Code3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Atm by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/atms/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"atms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmcz5h9jw0005rg84h0ksw0np"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Atm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\":\"teste criação\",\r\n    \"name\":\"nome teste\",\r\n    \"installationId\":\"38d8ee7e-3845-4b60-bb32-5ac7c0c87389\",\r\n    \"tenantId\":\"75aa57b6-4b3e-409b-b083-2277a2731dd9\",\r\n    \"deviceStatus\":\"INSTALLED\"    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/atms",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"atms"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Code3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\":\"teste criação\",\r\n    \"name\":\"nome teste\",\r\n    \"installationId\":\"38d8ee7e-3845-4b60-bb32-5ac7c0c87389\",\r\n    \"tenantId\":\"75aa57b6-4b3e-409b-b083-2277a2731dd9\",\r\n    \"deviceStatus\":\"INSTALLED\"    \r\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/atms/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"atms",
+								":id"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Code3",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7-devices",
+			"item": [
+				{
+					"name": "Create Device",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"serialNumber\":\"6661-UTNOTTA\",  \n  \"atmId\": \"cmd36s1790005b7cmy4uc7mb3\",\n  \"tenantId\": \"75aa57b6-4b3e-409b-b083-2277a2731dd9\",\n  \"status\": \"ACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/devices",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Devices",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/devices",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"devices"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": null,
+									"description": "createdAt",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": null,
+									"description": "asc | desc (default)",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": null,
+									"description": "nome contains",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Device by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/devices/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmd33eewa0001qs9u333yk0jy"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Device",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"serialNumber\":\"666-UTNOTTA1111\",  \n  \"status\": \"MAINTENANCE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/devices/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmd34x73l0001nq5rq66rmveg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Device",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_URL}}/devices/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmd33eewa0001qs9u333yk0jy"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders of service",
+			"item": [
+				{
+					"name": "Criar Ordem de Serviço",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"primeira ODS\",\r\n    \"description\":\"descrição da ordem de serviço\",\r\n    \"priority\":\"LOWEST\",\r\n    \"deviceId\":\"cmd36vi3i0001jy5rp27xlbch\",\r\n    \"status\":\"OPEN\",\r\n    \"tenantId\":\"75aa57b6-4b3e-409b-b083-2277a2731dd9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/orders-of-service",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"orders-of-service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update OoS",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"assignedId\":\"3d64a933-95da-445b-b6b5-3f0f46a6da\",\r\n    \"status\":\"ASSIGNED\"\r\n}"
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/orders-of-service/:id",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"orders-of-service",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cmd37vlqo0001t84c6dzq58e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ordens de serviço",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER_URL}}/orders-of-service/",
+							"host": [
+								"{{SERVER_URL}}"
+							],
+							"path": [
+								"orders-of-service",
+								""
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "OPEN",
+									"description": "OPEN, ASSIGNED, RECOGNIZED, IN_PROGRESS, DONE, CANCELLED",
+									"disabled": true
+								},
+								{
+									"key": "assignedId",
+									"value": null,
+									"description": "busca OS atribuídas a um técnico específico",
+									"disabled": true
+								},
+								{
+									"key": null,
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WebSocket",
+			"item": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SERVER_URL",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imd1c3Rhdm8uYXJlbmFzQGZsZXhtZWRpYS5jb20uYnIiLCJzdWIiOiJjbWF5aHJveHMwMDAycnliNzRiZXNtN2huIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ3ODY4Njc5LCJleHAiOjE3NDc4NzIyNzl9.MvWo43vWUwgqIUX-YElUA-Vq0wh3zdPaHzWIPP5-jHo"
+		},
+		{
+			"key": "REFRESHTOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imd1c3Rhdm8uYXJlbmFzQGZsZXhtZWRpYS5jb20uYnIiLCJzdWIiOiJjbWF5Y25kOTYwMDAybzc3eWs3OXF1bmV2Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ3OTE1NTYxLCJleHAiOjE3NDg1MjAzNjF9.S-9DRr3cc_RL6uiDDoRTigq8nZBNK61TbQF1fmz5m8Y",
+			"type": "default"
+		},
+		{
+			"key": "SERVER_URL",
+			"value": "192.168.1.30:43000",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "user",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
