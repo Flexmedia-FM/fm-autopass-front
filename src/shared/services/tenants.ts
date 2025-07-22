@@ -55,7 +55,6 @@ export class TenantsService {
   > {
     const response =
       await apiService.get<TenantsResponse>('/tenants?limit=100');
-    console.log('TenantsService.findAllSimple response:', response);
 
     return response.data.map((tenant: Tenant) => ({
       id: tenant.id,

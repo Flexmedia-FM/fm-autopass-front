@@ -49,7 +49,7 @@ export class UsersService {
    * Atualizar usuário
    */
   async updateUser(id: string, userData: Partial<UpdateUser>): Promise<User> {
-    return apiService.put<User>(`/users/${id}`, userData);
+    return apiService.patch<User>(`/users/${id}`, userData);
   }
 
   /**
@@ -62,8 +62,10 @@ export class UsersService {
   /**
    * Alterar status do usuário (ativar/desativar)
    */
-  async toggleUserStatus(id: string): Promise<User> {
-    return apiService.patch<User>(`/users/${id}/toggle-status`);
+  async toggleUserStatus(id: string, newStatus: boolean): Promise<User> {
+    console.log(`Toggling user status for ID ${id} to ${newStatus}`);
+    // Envia a solicitação para alterar o status do usuário
+    return apiService.patch<User>(`/users/${id}`, { isActive: newStatus });
   }
 
   /**

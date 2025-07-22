@@ -21,12 +21,13 @@ import {
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { useUsersStore } from './store';
-import { CustomButton } from '../../shared/ui';
 import {
   ReusableDataGrid,
   type DataGridColumn,
 } from '../../shared/ui/ReusableDataGrid';
 import CreateUserDialog from './CreateUserDialog';
+import EditUserDialog from './EditUserDialog';
+import DeleteUserDialog from './DeleteUserDialog';
 import type { UsersLoaderData } from './loader';
 import type { User } from './schema';
 import type { GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
@@ -41,11 +42,11 @@ export default function UsersRoute() {
     isLoading,
     error,
     toggleUserStatus,
-    removeUser,
     setPage,
     setLimit,
     setFilters,
     setUsers,
+    refreshUsers,
   } = useUsersStore();
 
   // Sincronizar dados do loader com o store na inicialização
@@ -70,6 +71,9 @@ export default function UsersRoute() {
 
   const [searchValue, setSearchValue] = useState('');
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const handlePaginationChange = useCallback(
     (model: GridPaginationModel) => {
@@ -116,37 +120,47 @@ export default function UsersRoute() {
     [handleSearch]
   );
 
-  const handleRefresh = useCallback(() => {
-    // Recarregar dados mantendo filtros atuais
-    window.location.reload();
-  }, []);
+  const handleRefresh = useCallback(async () => {
+    try {
+      await refreshUsers();
+    } catch (error) {
+      console.error('Erro ao recarregar dados:', error);
+    }
+  }, [refreshUsers]);
 
   const handleStatusToggle = useCallback(
-    (id: string) => {
-      toggleUserStatus(id);
+    async (id: string) => {
+      try {
+        await toggleUserStatus(id);
+      } catch (error) {
+        console.error('Erro ao alterar status:', error);
+        // O erro já é tratado no store e exibido na interface
+      }
     },
     [toggleUserStatus]
   );
 
-  const handleEdit = useCallback((id: string) => {
-    console.log('Editar usuário:', id);
-    // Aqui você implementaria a lógica de edição
-  }, []);
+  const handleEdit = useCallback(
+    (id: string) => {
+      const userToEdit = users.find((user) => user.id === id);
+      if (userToEdit) {
+        setSelectedUser(userToEdit);
+        setEditDialogOpen(true);
+      }
+    },
+    [users]
+  );
 
   const handleDelete = useCallback(
     (id: string) => {
-      if (window.confirm('Tem certeza que deseja excluir este usuário?')) {
-        removeUser(id);
+      const userToDelete = users.find((user) => user.id === id);
+      if (userToDelete) {
+        setSelectedUser(userToDelete);
+        setDeleteDialogOpen(true);
       }
     },
-    [removeUser]
+    [users]
   );
-
-  const handleAddUser = useCallback(() => {
-    console.log('Adicionar novo usuário');
-    // Aqui você implementaria a lógica de adição
-    // Exemplo: navigate('/users/new');
-  }, []);
 
   const getUserRoleLabel = (role: string) => {
     switch (role) {
@@ -223,6 +237,7 @@ export default function UsersRoute() {
             onChange={() => handleStatusToggle(params.row.id as string)}
             size="small"
             color="primary"
+            disabled={isLoading}
           />
         </Tooltip>
       ),
@@ -245,6 +260,7 @@ export default function UsersRoute() {
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
+      flex: 1,
       renderCell: (params) => (
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Tooltip title="Editar usuário">
@@ -276,13 +292,6 @@ export default function UsersRoute() {
         <Typography variant="h4" component="h1">
           Usuários
         </Typography>
-        <CustomButton
-          variant="contained"
-          startIcon={<PersonAddIcon />}
-          onClick={handleAddUser}
-        >
-          Adicionar Usuário
-        </CustomButton>
       </Box>
 
       {error && (
@@ -319,7 +328,7 @@ export default function UsersRoute() {
           <Button
             variant="outlined"
             onClick={handleRefresh}
-            sx={{ minWidth: 'auto', px: 2 }}
+            sx={{ minWidth: 100, px: 2 }}
           >
             <RefreshIcon />
           </Button>
@@ -328,7 +337,7 @@ export default function UsersRoute() {
             color="success"
             onClick={() => setCreateDialogOpen(true)}
             startIcon={<PersonAddIcon />}
-            sx={{ minWidth: 'auto', px: 2 }}
+            sx={{ width: 200, px: 2, flexGrow: 1 }}
           >
             Criar Usuário
           </Button>
@@ -366,6 +375,26 @@ export default function UsersRoute() {
       <CreateUserDialog
         open={createDialogOpen}
         onClose={() => setCreateDialogOpen(false)}
+      />
+
+      {/* Dialog de edição de usuário */}
+      <EditUserDialog
+        open={editDialogOpen}
+        onClose={() => {
+          setEditDialogOpen(false);
+          setSelectedUser(null);
+        }}
+        user={selectedUser}
+      />
+
+      {/* Dialog de exclusão de usuário */}
+      <DeleteUserDialog
+        open={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+          setSelectedUser(null);
+        }}
+        user={selectedUser}
       />
     </Box>
   );
