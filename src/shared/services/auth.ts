@@ -1,3 +1,4 @@
+import { TokenCookieManager } from '../utils';
 import { apiService } from './api';
 
 // Tipos para as requisições de autenticação
@@ -73,8 +74,7 @@ export class AuthService {
 
   // Logout do usuário
   async logout(): Promise<void> {
-    cookieStore.delete('access_token');
-    cookieStore.delete('refresh_token');
+    TokenCookieManager.clearTokens();
   }
 
   // Esqueci a senha
