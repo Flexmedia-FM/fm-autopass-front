@@ -13,13 +13,13 @@ export const DeviceStatusEnum = z.enum([
 
 // Schemas Zod para validação
 export const DeviceSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   serialNumber: z
     .string()
     .min(6, 'Número de série deve ter pelo menos 6 caracteres'),
   code: z.string().optional(),
-  atmId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  atmId: z.string(),
+  tenantId: z.string(),
   status: DeviceStatusEnum,
   installationDate: z.string().datetime().optional(),
   lastMaintenanceDate: z.string().datetime().optional(),
@@ -29,16 +29,16 @@ export const DeviceSchema = z.object({
   // Relacionamentos
   atm: z
     .object({
-      id: z.string().uuid(),
-      name: z.string(),
+      // id: z.string(),
+      // name: z.string(),
       code: z.string().optional(),
     })
     .optional(),
   tenant: z
     .object({
-      id: z.string().uuid(),
-      name: z.string(),
-      fantasyName: z.string(),
+      id: z.string(),
+      // name: z.string(),
+      // fantasyName: z.string(),
     })
     .optional(),
 });
@@ -61,7 +61,7 @@ export const QueryDeviceSchema = z.object({
     .optional(),
   order: z.enum(['asc', 'desc']).optional(),
   search: z.string().optional(),
-  atmId: z.string().uuid().optional(),
+  atmId: z.string().optional(),
   status: DeviceStatusEnum.optional(),
 });
 
@@ -77,7 +77,7 @@ export interface DevicesResponse {
   total: number;
   page: number;
   limit: number;
-  totalPages: number;
+  // totalPages: number;
 }
 
 // Mapeamento de status para português

@@ -8,7 +8,7 @@ import { ThemeProvider } from './app/theme/ThemeProvider';
 import { AuthInitializer } from './shared/components';
 import Layout from './routes/layout';
 import DashboardRoute from './routes/dashboard';
-import DevicesRoute from './routes/devices';
+import { DevicesRoute } from './routes/devices';
 import { UsersRoute } from './routes/users';
 import { LoginRoute, ForgotPasswordRoute } from './routes/auth';
 import { dashboardLoader } from './routes/dashboard/loader';
