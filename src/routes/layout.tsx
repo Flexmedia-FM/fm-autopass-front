@@ -21,6 +21,7 @@ import {
 import {
   Dashboard as DashboardIcon,
   Devices as DevicesIcon,
+  People as PeopleIcon,
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   LightMode as LightModeIcon,
@@ -43,6 +44,11 @@ const menuItems = [
     text: 'Dispositivos',
     path: '/devices',
     icon: <DevicesIcon />,
+  },
+  {
+    text: 'Usuários',
+    path: '/users',
+    icon: <PeopleIcon />,
   },
 ];
 

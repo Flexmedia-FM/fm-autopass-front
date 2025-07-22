@@ -178,6 +178,19 @@ export class ApiService {
     }
   }
 
+  async patch<T>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
+    try {
+      const response = await apiClient.patch<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   private handleError(error: unknown): ApiError {
     if (axios.isAxiosError(error)) {
       return {

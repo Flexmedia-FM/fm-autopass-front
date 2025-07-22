@@ -9,9 +9,11 @@ import { AuthInitializer } from './shared/components';
 import Layout from './routes/layout';
 import DashboardRoute from './routes/dashboard';
 import DevicesRoute from './routes/devices';
+import { UsersRoute } from './routes/users';
 import { LoginRoute, ForgotPasswordRoute } from './routes/auth';
 import { dashboardLoader } from './routes/dashboard/loader';
 import { devicesLoader } from './routes/devices/loader';
+import { usersLoader } from './routes/users/loader';
 import { authLoader, protectedLoader } from './routes/auth/loader';
 
 const router = createBrowserRouter([
@@ -59,6 +61,18 @@ const router = createBrowserRouter([
         index: true,
         element: <DevicesRoute />,
         loader: devicesLoader,
+      },
+    ],
+  },
+  {
+    path: '/users',
+    element: <Layout />,
+    loader: protectedLoader,
+    children: [
+      {
+        index: true,
+        element: <UsersRoute />,
+        loader: usersLoader,
       },
     ],
   },
