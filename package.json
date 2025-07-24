@@ -14,7 +14,13 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
     "preview": "vite preview",
-    "preview:staging": "vite preview --mode staging"
+    "preview:staging": "vite preview --mode staging",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build",
+    "docker:build": "docker build --target production --build-arg BUILD_MODE=production -t fm-autopass-frontend:latest .",
+    "docker:build:dev": "docker build --target development -t fm-autopass-frontend:dev .",
+    "docker:stop": "docker-compose -f docker-compose.dev.yml down && docker-compose -f docker-compose.prod.yml down",
+    "docker:clean": "docker-compose -f docker-compose.dev.yml down --rmi all --volumes && docker-compose -f docker-compose.prod.yml down --rmi all --volumes"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

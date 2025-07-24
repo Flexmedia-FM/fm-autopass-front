@@ -207,7 +207,7 @@ export default function LoginRoute() {
       {/* Credenciais de teste */}
       <Box sx={{ mt: 3, textAlign: 'center' }}>
         <Typography variant="body2" color="text.secondary">
-          Credenciais de teste: admin@autopass.com / 123456
+          Credenciais de teste: yuri.sa@flexmedia / Flex@55350050
         </Typography>
       </Box>
 

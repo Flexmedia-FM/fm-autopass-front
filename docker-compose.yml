@@ -1,0 +1,93 @@
+# Docker Compose para FM AutoPass Frontend
+# Versão com múltiplos ambientes e configurações
+
+services:
+  # Serviço para desenvolvimento
+  fm-autopass-frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: fm-autopass-frontend-dev
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env.development
+    networks:
+      - autopass-network
+    restart: unless-stopped
+    profiles:
+      - dev
+
+  # Serviço para staging
+  fm-autopass-frontend-staging:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        BUILD_MODE: staging
+    container_name: fm-autopass-frontend-staging
+    ports:
+      - '8080:80'
+    environment:
+      - NODE_ENV=staging
+    env_file:
+      - .env.staging
+    networks:
+      - autopass-network
+    restart: unless-stopped
+    profiles:
+      - staging
+
+  # Serviço para produção
+  fm-autopass-frontend-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        BUILD_MODE: production
+    container_name: fm-autopass-frontend-prod
+    ports:
+      - '80:80'
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.production
+    networks:
+      - autopass-network
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  # Nginx reverse proxy (opcional, para múltiplos ambientes)
+  nginx-proxy:
+    image: nginx:1.25-alpine
+    container_name: fm-autopass-nginx-proxy
+    ports:
+      - '443:443'
+      - '80:80'
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - fm-autopass-frontend-prod
+    networks:
+      - autopass-network
+    restart: unless-stopped
+    profiles:
+      - proxy
+
+networks:
+  autopass-network:
+    driver: bridge
+    name: autopass-network
+
+volumes:
+  node_modules:

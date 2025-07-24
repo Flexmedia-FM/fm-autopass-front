@@ -1,0 +1,44 @@
+# Docker Compose para produção
+# Configuração otimizada para ambiente de produção
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        BUILD_MODE: production
+    container_name: fm-autopass-frontend-prod
+    ports:
+      - '80:80'
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.production
+    restart: always
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:80/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+networks:
+  default:
+    name: autopass-prod
