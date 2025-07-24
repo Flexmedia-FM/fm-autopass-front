@@ -18,14 +18,15 @@ export const DeviceSchema = z.object({
     .string()
     .min(6, 'Número de série deve ter pelo menos 6 caracteres'),
   code: z.string().optional(),
-  atmId: z.string(),
+  atmId: z.string().nullable(), // Pode ser null
   tenantId: z.string(),
   status: DeviceStatusEnum,
-  installationDate: z.string().datetime().optional(),
-  lastMaintenanceDate: z.string().datetime().optional(),
+  statusLabel: z.string().optional(), // Campo adicional da API
+  installationDate: z.iso.datetime({ local: true }).optional(),
+  lastMaintenanceDate: z.iso.datetime({ local: true }).optional(),
   notes: z.string().optional(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.iso.datetime({ local: true }),
+  updatedAt: z.iso.datetime({ local: true }),
   // Relacionamentos
   atm: z
     .object({
@@ -33,7 +34,8 @@ export const DeviceSchema = z.object({
       // name: z.string(),
       code: z.string().optional(),
     })
-    .optional(),
+    .optional()
+    .nullable(),
   tenant: z
     .object({
       id: z.string(),

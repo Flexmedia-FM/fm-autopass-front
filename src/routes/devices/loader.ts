@@ -1,5 +1,5 @@
-import { DevicesResponseSchema, type DevicesLoaderData } from './schema';
 import { DevicesService } from '../../shared/services';
+import type { DevicesLoaderData } from './index';
 
 export async function devicesLoader(): Promise<DevicesLoaderData> {
   try {
@@ -11,11 +11,8 @@ export async function devicesLoader(): Promise<DevicesLoaderData> {
       order: 'desc',
     });
 
-    // Validar dados com Zod
-    const validatedDevices = DevicesResponseSchema.parse(devicesResponse);
-
     return {
-      devices: validatedDevices,
+      devices: devicesResponse,
     };
   } catch (error) {
     console.error('Erro ao carregar dispositivos:', error);

@@ -31,14 +31,26 @@ import {
   ReusableDataGrid,
   type DataGridColumn,
 } from '../../shared/ui/ReusableDataGrid';
-import type { DevicesLoaderData } from './schema';
-import type { Device, DeviceStatus } from './schema';
+import type { Device, DeviceStatus } from '../../shared/services/devices';
 import type { GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import {
   DeviceStatusLabels,
   DeviceStatusColors,
 } from '../../shared/services/devices';
+
+// Tipo para dados do loader (específico da rota)
+interface DevicesLoaderData {
+  devices: {
+    data: Device[];
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
 import { TenantsService } from '../../shared/services';
+import { CreateDeviceDialog } from './CreateDeviceDialog';
+import { EditDeviceDialog } from './EditDeviceDialog';
+import { DeleteDeviceDialog } from './DeleteDeviceDialog';
 
 // Componente para exibir o nome do tenant de forma assíncrona
 function TenantNameCell({ tenantId }: { tenantId: string }) {
@@ -106,6 +118,12 @@ export default function DevicesRoute() {
   const [statusFilter, setStatusFilter] = useState<DeviceStatus | ''>(
     filters.status || ''
   );
+
+  // Estados para controlar os diálogos
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
   // Inicializar com dados do loader
   useEffect(() => {
@@ -206,6 +224,28 @@ export default function DevicesRoute() {
     const newStatus: DeviceStatus =
       device.status === 'MAINTENANCE' ? 'ACTIVE' : 'MAINTENANCE';
     await updateDeviceStatus(device.id, newStatus);
+  };
+
+  // Handlers para diálogos
+  const handleCreateDevice = () => {
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleEditDevice = (device: Device) => {
+    setSelectedDevice(device);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleDeleteDevice = (device: Device) => {
+    setSelectedDevice(device);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDialogs = () => {
+    setIsCreateDialogOpen(false);
+    setIsEditDialogOpen(false);
+    setIsDeleteDialogOpen(false);
+    setSelectedDevice(null);
   };
 
   // Definição das colunas da grid
@@ -322,13 +362,7 @@ export default function DevicesRoute() {
             </Tooltip>
 
             <Tooltip title="Editar">
-              <IconButton
-                size="small"
-                onClick={() => {
-                  // TODO: Implementar edição
-                  console.log('Editar dispositivo:', device.id);
-                }}
-              >
+              <IconButton size="small" onClick={() => handleEditDevice(device)}>
                 <EditIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -336,10 +370,7 @@ export default function DevicesRoute() {
             <Tooltip title="Excluir">
               <IconButton
                 size="small"
-                onClick={() => {
-                  // TODO: Implementar exclusão
-                  console.log('Excluir dispositivo:', device.id);
-                }}
+                onClick={() => handleDeleteDevice(device)}
                 color="error"
               >
                 <DeleteIcon fontSize="small" />
@@ -361,10 +392,7 @@ export default function DevicesRoute() {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          onClick={() => {
-            // TODO: Implementar criação
-            console.log('Adicionar dispositivo');
-          }}
+          onClick={handleCreateDevice}
         >
           Adicionar Dispositivo
         </Button>
@@ -467,6 +495,24 @@ export default function DevicesRoute() {
         onSortChange={handleSortChange}
         getRowId={(row) => (row as Device).id}
         height={600}
+      />
+
+      {/* Diálogos de CRUD */}
+      <CreateDeviceDialog
+        open={isCreateDialogOpen}
+        onClose={handleCloseDialogs}
+      />
+
+      <EditDeviceDialog
+        open={isEditDialogOpen}
+        onClose={handleCloseDialogs}
+        device={selectedDevice}
+      />
+
+      <DeleteDeviceDialog
+        open={isDeleteDialogOpen}
+        onClose={handleCloseDialogs}
+        device={selectedDevice}
       />
     </Box>
   );

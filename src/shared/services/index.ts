@@ -5,3 +5,4 @@ export * from './tenants';
 export * from './lines';
 export * from './installations';
 export * from './devices';
+export * from './atms';

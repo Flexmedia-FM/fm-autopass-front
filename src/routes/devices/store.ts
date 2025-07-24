@@ -1,12 +1,21 @@
 import { create } from 'zustand';
 import {
-  DeviceSchema,
   type Device,
   type CreateDevice,
-  type DeviceFilters,
   type DevicesResponse,
-} from './schema';
-import { DevicesService } from '../../shared/services';
+  DevicesService,
+} from '../../shared/services';
+
+// Definindo o tipo de filtros localmente, já que é específico da UI
+interface DeviceFilters {
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'createdAt' | 'serialNumber' | 'status' | 'installationDate';
+  sortOrder?: 'asc' | 'desc';
+  status?: Device['status'];
+  atmId?: string;
+}
 
 interface DevicesState {
   devices: Device[];
@@ -50,25 +59,13 @@ export const useDevicesStore = create<DevicesState>((set, get) => ({
   filters: initialFilters,
 
   setDevices: (response) => {
-    try {
-      const validatedResponse = {
-        data: response.data.map((device) => DeviceSchema.parse(device)),
-        total: response.total,
-        page: response.page,
-        limit: response.limit,
-      };
-
-      set({
-        devices: validatedResponse.data,
-        totalDevices: validatedResponse.total,
-        currentPage: validatedResponse.page,
-        limit: validatedResponse.limit,
-        error: null,
-      });
-    } catch (error) {
-      console.error('Erro ao validar dispositivos:', error);
-      set({ error: 'Erro ao processar dados dos dispositivos' });
-    }
+    set({
+      devices: response.data,
+      totalDevices: response.total,
+      currentPage: response.page,
+      limit: response.limit,
+      error: null,
+    });
   },
 
   loadDevices: async (newFilters = {}) => {

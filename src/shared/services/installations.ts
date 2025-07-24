@@ -11,12 +11,12 @@ export const LocationSchema = z
 
 // Schemas Zod para validação
 export const InstallationSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   name: z.string().min(1, 'Nome é obrigatório'),
   code: z.string().optional(),
   address: z.string().optional(),
   location: LocationSchema,
-  tenantId: z.string().uuid(),
+  tenantId: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
