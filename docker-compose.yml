@@ -91,3 +91,7 @@ networks:
 
 volumes:
   node_modules:
+
+  frontend-data:
+    driver: local
+    name: frontend-data-general

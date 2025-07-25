@@ -9,10 +9,12 @@ import { AuthInitializer } from './shared/components';
 import Layout from './routes/layout';
 import DashboardRoute from './routes/dashboard';
 import { DevicesRoute } from './routes/devices';
+import { AtmsRoute } from './routes/atms';
 import { UsersRoute } from './routes/users';
 import { LoginRoute, ForgotPasswordRoute } from './routes/auth';
 import { dashboardLoader } from './routes/dashboard/loader';
 import { devicesLoader } from './routes/devices/loader';
+import { atmsLoader } from './routes/atms/loader';
 import { usersLoader } from './routes/users/loader';
 import { authLoader, protectedLoader } from './routes/auth/loader';
 
@@ -61,6 +63,18 @@ const router = createBrowserRouter([
         index: true,
         element: <DevicesRoute />,
         loader: devicesLoader,
+      },
+    ],
+  },
+  {
+    path: '/atms',
+    element: <Layout />,
+    loader: protectedLoader,
+    children: [
+      {
+        index: true,
+        element: <AtmsRoute />,
+        loader: atmsLoader,
       },
     ],
   },

@@ -1,89 +1,105 @@
-import { z } from 'zod';
+import {
+  AtmSchema,
+  CreateAtmSchema,
+  UpdateAtmSchema,
+  type Atm,
+  type AtmsResponse,
+  type AtmStatus,
+  type CreateAtm,
+  type QueryAtmParams,
+  type UpdateAtm,
+} from '../../routes/atms/schema';
 import { apiService } from './api';
 
 // Schema para ATM (caixa eletrônico)
-export const AtmSchema = z.object({
-  id: z.string(),
-  code: z.string().min(1, 'Código é obrigatório'),
-  name: z.string().min(1, 'Nome é obrigatório'),
-  location: z.string().optional(),
-  address: z.string().optional(),
-  tenantId: z.string(),
-  installationId: z.string().optional(),
-  status: z.enum(['ACTIVE', 'INACTIVE', 'MAINTENANCE']).default('ACTIVE'),
-  isActive: z.boolean().default(true),
-  notes: z.string().optional(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  // Relacionamentos opcionais
-  tenant: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-      fantasyName: z.string().optional(),
-    })
-    .optional(),
-  installation: z
-    .object({
-      // id: z.string(),
-      // name: z.string(),
-      code: z.string(),
-    })
-    .optional(),
-});
+// export const AtmSchema = z.object({
+//   id: z.string(),
+//   code: z.string().min(1, 'Código é obrigatório'),
+//   name: z.string().min(1, 'Nome é obrigatório'),
+//   location: z.string().optional(),
+//   address: z.string().optional(),
+//   tenantId: z.string(),
+//   installationId: z.string().optional(),
+//   deviceStatus: DeviceStatusEnum.optional().default('INACTIVE'),
+//   isActive: z.boolean().default(true),
+//   notes: z.string().optional(),
+//   createdAt: z.iso.datetime({
+//     local: true,
+//     message: 'Data de criação inválida',
+//   }),
+//   updatedAt: z.iso.datetime({
+//     local: true,
+//     message: 'Data de atualização inválida',
+//   }),
+//   // Relacionamentos opcionais
+//   tenant: z
+//     .object({
+//       id: z.string(),
+//       name: z.string(),
+//       fantasyName: z.string().optional(),
+//     })
+//     .optional(),
+//   installation: z
+//     .object({
+//       // id: z.string(),
+//       // name: z.string(),
+//       code: z.string(),
+//     })
+//     .optional(),
+// });
 
-export const CreateAtmSchema = AtmSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  tenant: true,
-  installation: true,
-});
+// export const CreateAtmSchema = AtmSchema.omit({
+//   id: true,
+//   createdAt: true,
+//   updatedAt: true,
+//   tenant: true,
+//   installation: true,
+// });
 
-export const UpdateAtmSchema = CreateAtmSchema.partial();
+// export const UpdateAtmSchema = CreateAtmSchema.partial();
 
-export const QueryAtmSchema = z.object({
-  page: z.number().min(1).optional(),
-  limit: z.number().min(1).max(100).optional(),
-  sortBy: z.enum(['createdAt', 'name', 'code', 'status']).optional(),
-  order: z.enum(['asc', 'desc']).optional(),
-  search: z.string().optional(),
-  tenantId: z.string().optional(),
-  installationId: z.string().optional(),
-  status: z.enum(['ACTIVE', 'INACTIVE', 'MAINTENANCE']).optional(),
-  isActive: z.boolean().optional(),
-});
+// export const QueryAtmSchema = z.object({
+//   page: z.number().min(1).optional(),
+//   limit: z.number().min(1).max(100).optional(),
+//   sortBy: z.enum(['createdAt', 'name', 'code', 'status']).optional(),
+//   order: z.enum(['asc', 'desc']).optional(),
+//   search: z.string().optional(),
+//   tenantId: z.string().optional(),
+//   installationId: z.string().optional(),
+//   status: z.enum(['ACTIVE', 'INACTIVE', 'MAINTENANCE']).optional(),
+//   isActive: z.boolean().optional(),
+// });
 
 // Tipos TypeScript
-export type Atm = z.infer<typeof AtmSchema>;
-export type CreateAtm = z.infer<typeof CreateAtmSchema>;
-export type UpdateAtm = z.infer<typeof UpdateAtmSchema>;
-export type QueryAtmParams = z.infer<typeof QueryAtmSchema>;
-export type AtmStatus = z.infer<typeof AtmSchema>['status'];
+// export type Atm = z.infer<typeof AtmSchema>;
+// export type CreateAtm = z.infer<typeof CreateAtmSchema>;
+// export type UpdateAtm = z.infer<typeof UpdateAtmSchema>;
+// export type QueryAtmParams = z.infer<typeof QueryAtmSchema>;
+// export type AtmStatus = z.infer<typeof AtmSchema>['deviceStatus'];
 
-export interface AtmsResponse {
-  data: Atm[];
-  total: number;
-  page: number;
-  limit: number;
-}
+// export interface AtmsResponse {
+//   data: Atm[];
+//   total: number;
+//   page: number;
+//   limit: number;
+// }
 
 // Mapeamento de status para português
-export const AtmStatusLabels: Record<AtmStatus, string> = {
-  ACTIVE: 'Ativo',
-  INACTIVE: 'Inativo',
-  MAINTENANCE: 'Em Manutenção',
-};
+// export const AtmStatusLabels: Record<AtmStatus, string> = {
+//   ACTIVE: 'Ativo',
+//   INACTIVE: 'Inativo',
+//   MAINTENANCE: 'Em Manutenção',
+// };
 
 // Mapeamento de status para cores do Material-UI
-export const AtmStatusColors: Record<
-  AtmStatus,
-  'success' | 'error' | 'warning' | 'default'
-> = {
-  ACTIVE: 'success',
-  INACTIVE: 'error',
-  MAINTENANCE: 'warning',
-};
+// export const AtmStatusColors: Record<
+//   AtmStatus,
+//   'success' | 'error' | 'warning' | 'default'
+// > = {
+//   ACTIVE: 'success',
+//   INACTIVE: 'error',
+//   MAINTENANCE: 'warning',
+// };
 
 // Serviço para ATMs
 export class AtmsService {
@@ -101,7 +117,8 @@ export class AtmsService {
     if (params?.tenantId) searchParams.append('tenantId', params.tenantId);
     if (params?.installationId)
       searchParams.append('installationId', params.installationId);
-    if (params?.status) searchParams.append('status', params.status);
+    if (params?.deviceStatus)
+      searchParams.append('deviceStatus', params.deviceStatus);
     if (params?.isActive !== undefined)
       searchParams.append('isActive', params.isActive.toString());
 
@@ -176,14 +193,14 @@ export class AtmsService {
    * Atualizar status do ATM
    */
   static async updateStatus(id: string, status: AtmStatus): Promise<Atm> {
-    return this.update(id, { status });
+    return this.update(id, { deviceStatus: status });
   }
 
   /**
    * Ativar/Desativar ATM
    */
   static async toggleActive(id: string, isActive: boolean): Promise<Atm> {
-    return this.update(id, { isActive });
+    return this.update(id, { deviceStatus: isActive ? 'ACTIVE' : 'INACTIVE' });
   }
 
   /**
@@ -192,7 +209,7 @@ export class AtmsService {
   static async findActiveByTenant(tenantId: string): Promise<Atm[]> {
     const response = await this.findByTenant(tenantId, {
       isActive: true,
-      status: 'ACTIVE',
+      deviceStatus: 'ACTIVE',
       limit: 100, // Buscar mais ATMs para selects
     });
     return response.data;

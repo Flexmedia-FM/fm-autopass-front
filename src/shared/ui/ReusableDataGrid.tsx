@@ -12,7 +12,7 @@ import {
   GridToolbarColumnsButton,
   GridToolbarExport,
 } from '@mui/x-data-grid';
-import { Box, Paper, Typography, CircularProgress, Alert } from '@mui/material';
+import { Box, Paper, Typography, Alert } from '@mui/material';
 
 export interface DataGridColumn extends Omit<GridColDef, 'field'> {
   field: string;
@@ -111,7 +111,7 @@ export function ReusableDataGrid({
   }
 
   return (
-    <Paper sx={{ p: 2, ...sx }}>
+    <Paper sx={{ p: 2, ...sx, height: '100%' }}>
       {title && (
         <Typography variant="h6" component="h2" gutterBottom>
           {title}
@@ -119,7 +119,7 @@ export function ReusableDataGrid({
       )}
 
       <Box sx={{ width: '100%', position: 'relative' }}>
-        {loading && (
+        {/* {loading && (
           <Box
             sx={{
               position: 'absolute',
@@ -136,7 +136,7 @@ export function ReusableDataGrid({
           >
             <CircularProgress />
           </Box>
-        )}
+        )} */}
 
         <DataGrid
           rows={rows}

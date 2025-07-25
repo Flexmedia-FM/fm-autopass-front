@@ -71,15 +71,7 @@ export class InstallationsService {
     const url = `/installations${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
     const response = await apiService.get<InstallationsResponse>(url);
 
-    // Validar dados com Zod
-    const validatedData = {
-      ...response,
-      data: response.data.map((installation: unknown) =>
-        InstallationSchema.parse(installation)
-      ),
-    };
-
-    return validatedData;
+    return response;
   }
 
   /**
@@ -131,22 +123,15 @@ export class InstallationsService {
   /**
    * Buscar instalações simplificadas (apenas id, name e code)
    */
-  static async findAllSimple(): Promise<
-    Pick<Installation, 'id' | 'name' | 'code'>[]
-  > {
-    const response = await apiService.get<
-      Pick<Installation, 'id' | 'name' | 'code'>[]
-    >('/installations/simple');
-
-    // Validar dados com Zod
-    const simpleInstallationSchema = InstallationSchema.pick({
-      id: true,
-      name: true,
-      code: true,
-    });
-    return response.map((installation: unknown) =>
-      simpleInstallationSchema.parse(installation)
+  static async findAllSimple(): Promise<InstallationsResponse> {
+    console.log('Buscando instalações simplificadas...');
+    const response = await apiService.get<InstallationsResponse>(
+      '/installations?page=1&limit=100'
     );
+
+    console.log('Instalações simplificadas carregadas:', response.data);
+
+    return response;
   }
 
   /**
@@ -156,6 +141,7 @@ export class InstallationsService {
     tenantId: string,
     params?: QueryInstallationParams
   ): Promise<InstallationsResponse> {
+    console.log('Buscando instalações para o tenant:', tenantId);
     const searchParams = new URLSearchParams();
 
     if (params?.page) searchParams.append('page', params.page.toString());
@@ -168,16 +154,11 @@ export class InstallationsService {
 
     const url = `/installations?${searchParams.toString()}`;
     const response = await apiService.get<InstallationsResponse>(url);
-
-    // Validar dados com Zod
-    const validatedData = {
-      ...response,
-      data: response.data.map((installation: unknown) =>
-        InstallationSchema.parse(installation)
-      ),
-    };
-
-    return validatedData;
+    console.log('Instalações carregadas:', response.data);
+    if (response.data.length === 0) {
+      console.warn('Nenhuma instalação encontrada para o tenant:', tenantId);
+    }
+    return response;
   }
 
   /**

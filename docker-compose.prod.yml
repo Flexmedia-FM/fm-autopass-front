@@ -42,3 +42,7 @@ services:
 networks:
   default:
     name: autopass-prod
+volumes:
+  frontend:
+    name: frontend-data-prod
+    driver: local

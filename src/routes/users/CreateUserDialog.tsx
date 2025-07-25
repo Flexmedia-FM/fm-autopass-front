@@ -21,7 +21,7 @@ import { CustomButton } from '../../shared/ui';
 import { useUsersStore } from './store';
 import { CreateUserSchema, type CreateUser } from './schema';
 import { useTenants } from './useTenants';
-import { z } from 'zod';
+import { ZodErrorHandler } from '../../shared/utils';
 
 interface CreateUserDialogProps {
   open: boolean;
@@ -84,10 +84,10 @@ export function CreateUserDialog({ open, onClose }: CreateUserDialogProps) {
         });
       }
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (ZodErrorHandler.isZodError(error)) {
         setValidationErrors((prev) => ({
           ...prev,
-          [field]: error.issues[0]?.message || 'Campo inválido',
+          [field]: ZodErrorHandler.getFirstErrorMessage(error),
         }));
       }
     }
@@ -149,14 +149,10 @@ export function CreateUserDialog({ open, onClose }: CreateUserDialogProps) {
       setSubmitError(null);
       return true;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const errors: Record<string, string> = {};
-        error.issues.forEach((err) => {
-          if (err.path[0]) {
-            errors[err.path[0] as string] = err.message;
-          }
-        });
-        setValidationErrors(errors);
+      const handled = ZodErrorHandler.handleError(error);
+
+      if (handled.isZodError && handled.formErrors) {
+        setValidationErrors(handled.formErrors);
       }
       return false;
     }

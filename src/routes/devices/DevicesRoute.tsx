@@ -347,8 +347,8 @@ export default function DevicesRoute() {
             <Tooltip
               title={
                 device.status === 'MAINTENANCE'
-                  ? 'Finalizar Manutenção'
-                  : 'Marcar para Manutenção'
+                  ? 'Retornar para Ativo'
+                  : 'Colocar em Manutenção'
               }
             >
               <IconButton

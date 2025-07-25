@@ -33,3 +33,7 @@ services:
 networks:
   default:
     name: autopass-dev
+volumes:
+  frontend:
+    name: frontend-data-dev
+    driver: local

@@ -21,6 +21,7 @@ import {
 import {
   Dashboard as DashboardIcon,
   Devices as DevicesIcon,
+  AtmOutlined as AtmIcon,
   People as PeopleIcon,
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -44,6 +45,11 @@ const menuItems = [
     text: 'Dispositivos',
     path: '/devices',
     icon: <DevicesIcon />,
+  },
+  {
+    text: 'ATMs',
+    path: '/atms',
+    icon: <AtmIcon />,
   },
   {
     text: 'Usuários',
